@@ -283,14 +283,14 @@ if (empty($reshook))
                         }
                         $sql = substr($sql, 0, strlen($sql) - 2).") VALUES (".$object->product_fourn_price_id.", ";
                         foreach ($extrafield_values as $key => $value) {
-                            $sql .= '"'.$value.'", ';
+                            $sql .= '\''.$value.'\', ';
                         }
                         $sql = substr($sql, 0, strlen($sql) - 2).')';
                     } // else update the existing one
                     else {
                         $sql = "UPDATE ".MAIN_DB_PREFIX."product_fournisseur_price_extrafields SET ";
                         foreach ($extrafield_values as $key => $value) {
-                            $sql .= str_replace('options_', '', $key).' = "'.$value.'", ';
+                            $sql .= str_replace('options_', '', $key).' = \''.$value.'\', ';
                         }
                         $sql = substr($sql, 0, strlen($sql) - 2).' WHERE fk_object = '.$object->product_fourn_price_id;
                     }
