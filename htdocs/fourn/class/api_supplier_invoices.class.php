@@ -385,12 +385,12 @@ class SupplierInvoices extends DolibarrApi
      *
      * @param int     $id                               Id of invoice
      * @param string  $datepaye           {@from body}  Payment date        {@type timestamp}
-     * @param int     $paiementid         {@from body}  Payment mode Id {@min 1}
+     * @param string  $paiementid         {@from body}  Payment mode ID (look it up via REST GET to /setup/dictionary/payment_types) {@min 1}
      * @param string  $closepaidinvoices  {@from body}  Close paid invoices {@choice yes,no}
-     * @param int     $accountid          {@from body}  Account Id {@min 1}
+     * @param int     $accountid          {@from body}  Account Id (look it up via REST GET to /bankaccounts) {@min 1}
      * @param string  $num_payment       {@from body}  Payment number (optional)
      * @param string  $comment            {@from body}  Note (optional)
-     * @param string  $chqemetteur        {@from body}  Payment issuer (mandatory if paiementcode = 'CHQ')
+     * @param string  $chqemetteur        {@from body}  Payment issuer (mandatory if transaction_type = 'CHQ')
      * @param string  $chqbank            {@from body}  Issuer bank name (optional)
      *
      * @url     POST {id}/payments
@@ -422,7 +422,7 @@ class SupplierInvoices extends DolibarrApi
         }
 
         if (empty($paiementid)) {
-            throw new RestException(400, 'Paiement ID or Paiement Code is mandatory');
+            throw new RestException(400, 'Paiement ID is mandatory');
         }
 
 
@@ -454,7 +454,7 @@ class SupplierInvoices extends DolibarrApi
         $paiement->amounts      = $amounts; // Array with all payments dispatching with invoice id
         $paiement->multicurrency_amounts = $multicurrency_amounts; // Array with all payments dispatching
         $paiement->paiementid = $paiementid;
-        $paiement->paiementcode = dol_getIdFromCode($this->db, $paiementid, 'c_paiement', 'id', 'code', 1);
+        $paiement->oper = dol_getIdFromCode($this->db, $paiementid, 'c_paiement', 'id', 'code', 1);
         $paiement->num_payment = $num_payment;
         $paiement->note_public = $comment;
 
